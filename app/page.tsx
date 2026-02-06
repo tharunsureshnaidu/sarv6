@@ -11,6 +11,7 @@ import {
 
 export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -34,6 +35,11 @@ export default function HomePage() {
       document.body.style.overflow = '';
     };
   }, [isModalOpen, isPrivacyOpen]);
+
+  // Set current year only on client side to avoid hydration mismatch
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -61,17 +67,17 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 font-sans overflow-hidden">
       {/* ================= HEADER ================= */}
       <header className="fixed top-0 w-full z-50 bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 md:py-0 flex items-center justify-between">
           <Link href="/" className="group">
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
               <Image
                 src="/logo.png"
                 alt="Sarv6 Solutions Logo"
-                width={180}
-                height={60}
+                width={210}
+                height={85}
                 priority
-                className="relative h-12 md:h-16 lg:h-20 w-auto transition-transform group-hover:scale-105"
+                className="relative h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </div>
           </Link>
@@ -108,16 +114,17 @@ export default function HomePage() {
 
           {/* Mobile Toggle */}
           <button 
-            className="lg:hidden text-gray-800 hover:text-emerald-600 transition-colors p-2" 
+            className="lg:hidden text-gray-800 hover:text-emerald-600 transition-colors p-3 active:scale-95 touch-manipulation" 
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
           >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
+            {menuOpen ? <X size={30} /> : <Menu size={30} />}
           </button>
         </div>
 
         {/* Mobile Nav */}
-        <div className={`lg:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="bg-white/95 backdrop-blur-lg border-t border-gray-100 px-6 py-4 space-y-3 shadow-xl">
+        <div className={`lg:hidden overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="bg-white/95 backdrop-blur-lg border-t border-gray-100 px-4 py-4 space-y-1 shadow-xl">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -133,11 +140,18 @@ export default function HomePage() {
                   }
                   setMenuOpen(false);
                 }}
-                className="block text-gray-700 font-semibold hover:text-emerald-600 transition-colors py-3 border-b border-gray-100 last:border-0"
+                className="block text-gray-700 font-semibold hover:text-emerald-600 active:bg-emerald-50 transition-colors py-4 px-4 rounded-lg touch-manipulation text-base border-b border-gray-100 last:border-0"
               >
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="block text-center mt-4 px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-full hover:shadow-lg active:scale-95 transition-all touch-manipulation"
+            >
+              Get Quote
+            </Link>
           </div>
         </div>
       </header>
@@ -169,7 +183,8 @@ export default function HomePage() {
               <div className="mt-1 text-xs md:text-sm text-gray-500">Home ▸ Terms and Conditions</div>
               <div className="mt-6 max-h-[70vh] overflow-y-auto text-[15px] leading-relaxed text-gray-700">
                 <p className="mb-4">
-                  The content of this website www.savr6solutions.com (the "Site"), is the property of Sarv6 Solutions Pvt. Ltd., with its principal office at Building No.1-90, Main Road, Thavanampalli, chittoor, AP 517131 India. Sarv6 Solutions is the logistics processing vertical of ZT. Your access to and use of the Site is governed by these Terms of Use that include any notices and consent given in connection with the Site (together, the "Agreement"). As used in this Agreement, "Sarv6 Solutions" "We", "Us" or "Our" refers to Sarv6 Solutions, its Principal ZT. "You" or "Your" refers to you, the user of this Site and the services provided by ZT.
+                  The content of this website www.sarv6solutions.com (the "Site"), is the property of Sarv6 Solutions Pvt. Ltd., with its principal office at Building No 13 katha No 116 Thota Vaari Veedhi Street, Parappana Agrahara, Electronic City, Bengaluru 560100, Karnataka, India.
+                  Your access to and use of the Site is governed by these Terms of Use that include any notices and consent given in connection with the Site (together, the "Agreement"). As used in this Agreement, "Sarv6 Solutions" "We", "Us" or "Our" refers to Sarv6 Solutions. "You" or "Your" refers to you, the user of this Site and the services provided by Sarv6 Solutions.
                 </p>
                 <p className="mb-4 font-semibold">BY USING THE SITE, YOU AGREE AS FOLLOWS.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">1. Agreement to Deal Electronically</h3>
@@ -185,9 +200,10 @@ export default function HomePage() {
                   <li>You will not use the website to violate another person's rights.</li>
                 </ul>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">4. Copyright</h3>
-                <p className="mb-4">This website, including but not limited to the design, text, graphics, and software compilation and underlying source code, is the property of Sarv6 Solutions Pvt. Ltd. and is protected by copyright. Permission is given only to make electronic copies and to print in hard copy, portions of this web site for the sole purpose of researching or using the services of Sarv6 Solutions. The status of ZT as the authors of this website should be admitted. Using any content, other than what has been already permitted, without the consent of Sarv6 Solutions, is strictly prohibited. This prohibition includes but is not limited to modification, copying, distributing, transmitting, displaying, publishing, selling, creating derivative works or using any materials available on or through this web site for commercial or public purposes.</p>
+                <p className="mb-4">This website, including but not limited to the design, text, graphics, and software compilation and underlying source code, is the property of Sarv6 Solutions Pvt. Ltd. and is protected by copyright. Permission is given only to make electronic copies and to print in hard copy, portions of this web site for the sole purpose of researching or using the services of Sarv6 Solutions. 
+                  Using any content, other than what has been already permitted, without the consent of Sarv6 Solutions, is strictly prohibited. This prohibition includes but is not limited to modification, copying, distributing, transmitting, displaying, publishing, selling, creating derivative works or using any materials available on or through this web site for commercial or public purposes.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">5. Trade Marks</h3>
-                <p className="mb-4">The trade marks, logos and service marks displayed on this website (marks) (excluding those included in client data records) are the property of Sarv6 Solutions. Users and visitors of this website are prohibited from using any marks for any purpose without the express written permission of ZT. This will include but not limited to prohibition from using the marks as metatags on other pages or websites. The site 'look and feel' or layout of this Site are protected by law, such as trade dress, trademark, unfair competition, and other laws, and may not be copied or imitated in any manner.</p>
+                <p className="mb-4">The trade marks, logos and service marks displayed on this website (marks) (excluding those included in client data records) are the property of Sarv6 Solutions. Users and visitors of this website are prohibited from using any marks for any purpose without the express written permission of Sarv6 Solutions. This will include but not limited to prohibition from using the marks as metatags on other pages or websites. The site 'look and feel' or layout of this Site are protected by law, such as trade dress, trademark, unfair competition, and other laws, and may not be copied or imitated in any manner.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">6. Rules Relating to Services</h3>
                 <p className="mb-2">You will be liable for communications posted by you or through your account for the services used by you. You hereby agree that violating any of the conditions mentioned below will constitute material breach of this Agreement.</p>
                 <ul className="list-disc ml-6 space-y-2 mb-4">
@@ -199,7 +215,7 @@ export default function HomePage() {
                   <li>If you post improper questions or answers that are not related to the particular topic; Stalking, harassing, or otherwise harming others.</li>
                   <li>You should not distribute any viruses or corrupted files or any other similar software that could damage other person's computer operation.</li>
                   <li>You should not collect or store this Site's users' personal data. You should not Induce, entice, solicit or recruit or lure users or Experts to another web site which, in Sarv6 Solutions determination, is its competitor.</li>
-                  <li>You should not engage in any kind of behavior on the Site, which is unacceptable to ZT. Sarv6 Solutions is not obligated to notify you in case it changes the content for any reason or terminate your access to the site.</li>
+                  <li>You should not engage in any kind of behavior on the Site, which is unacceptable to Sarv6 Solutions. Sarv6 Solutions is not obligated to notify you in case it changes the content for any reason or terminate your access to the site.</li>
                 </ul>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">7. Representation & Warranties</h3>
                 <p className="mb-4">You represent and warrant that (a) you are above the age of 18 years. (b) You have the right and ability to enter into and make representations and warranties contained in this Agreement. (c) All the information submitted by you is true and accurate to the best of your knowledge (d) You will be responsible for maintaining your account, even if the account used without your permission by a third party (e) You will not use the site for any illegal purpose or for any purpose that is barred by this Agreement (f) All submission are owned by you and Sarv6 Solutions. Use of these submissions does not infringe or violate any intellectual property rights of any third parties.</p>
@@ -210,7 +226,7 @@ export default function HomePage() {
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">10. Indemnity</h3>
                 <p className="mb-4">You agree to defend, indemnify and hold harmless Sarv6 Solutions, its members, officers, directors, employees, agents, from and against all claims, actions or demands, liabilities, and settlements, including, without limitation, reasonable legal and accounting fees, arising in connection with your use of the Site or resulting from, or alleged to result from, your use of the Site or your violation of this Agreement.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">11. Limitation of Liability</h3>
-                <p className="mb-4">IN NO EVENT WILL Sarv6 Solutions BE HELD LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL DAMAGES, OR ANY AND ALL OTHER DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF DATA, PERSONAL INJURY, FAILURE TO MEET ANY DUTY INCLUDING ACTS OF GOOD FAITH OR OF REASONABLE CARE, AND FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN ANY WAY CONNECTED WITH THE USE OR PERFORMANCE OF THIS SITE. THE DELAY OR INABILITY TO USE THIS SITE, OR THIS AGREEMENT, EVEN IN THE EVENT OF FAULT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, BREACH OF CONTRACT, OR BREACH OF WARRANTY OF Sarv6 Solutions, THESE LIMITATIONS AND EXCLUSIONS REGARDING DAMAGES WILL APPLY EVEN IF ANY REMEDY FAILS. IF, HOWEVER, A COURT OF COMPETENT JURISDICTION DETERMINES THAT YOU ARE ENTITLED TO DIRECT DAMAGES PURSUANT TO APPLICABLE LAW YOU AGREE THAT ZT LIABILITY WILL NOT EXCEED THE AMOUNT OF Rs. 100.00 (Rs One hundred, Indian rupees). YOU ACKNOWLEDGE THAT THIS PROVISION IS FAIR.</p>
+                <p className="mb-4">IN NO EVENT WILL Sarv6 Solutions BE HELD LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL DAMAGES, OR ANY AND ALL OTHER DAMAGES WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF DATA, PERSONAL INJURY, FAILURE TO MEET ANY DUTY INCLUDING ACTS OF GOOD FAITH OR OF REASONABLE CARE, AND FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF OR IN ANY WAY CONNECTED WITH THE USE OR PERFORMANCE OF THIS SITE. THE DELAY OR INABILITY TO USE THIS SITE, OR THIS AGREEMENT, EVEN IN THE EVENT OF FAULT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, BREACH OF CONTRACT, OR BREACH OF WARRANTY OF Sarv6 Solutions, THESE LIMITATIONS AND EXCLUSIONS REGARDING DAMAGES WILL APPLY EVEN IF ANY REMEDY FAILS. IF, HOWEVER, A COURT OF COMPETENT JURISDICTION DETERMINES THAT YOU ARE ENTITLED TO DIRECT DAMAGES PURSUANT TO APPLICABLE LAW YOU AGREE THAT Sarv6 Solutions LIABILITY WILL NOT EXCEED THE AMOUNT OF Rs. 100.00 (Rs One hundred, Indian rupees). YOU ACKNOWLEDGE THAT THIS PROVISION IS FAIR.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">12. Disclaimer</h3>
                 <p className="mb-4">ALL INFORMATION CONTAINED WITHIN THIS WEBSITE IS PROVIDED FOR GENERAL INFORMATION PURPOSES ONLY AND ON THE UNDERSTANDING THAT NONE OF THE CONTENT HEREIN CONSTITUTES LEGAL OR OTHER PROFESSIONAL ADVICE. THE APPLICATION AND IMPACT OF LAWS CAN VARY WIDELY DEPENDING ON THE SPECIFIC FACTS INVOLVED. Sarv6 Solutions HAS ATTEMPTED TO MAKE SURE THAT ALL INFORMATION CONTAINED WITHIN THIS WEBSITE HAS BEEN OBTAINED FROM DEPENDABLE SOURCES, BUT ALL SUCH INFORMATION IS PROVIDED "AS IS", WITH NO GUARANTEE OF COMPLETENESS OR ACCURACY. Sarv6 Solutions PROVIDES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, AS REGARDS THE INFORMATION HEREIN, AND DISCLAIMS ALL LIABILITY AND RESPONSIBILITY FOR ANY LOSS THAT MAY ARISE FROM RELIANCE ON INFORMATION CONTAINED WITHIN THIS WEBSITE.</p>
                 <h3 className="mt-6 mb-2 text-xl font-bold text-gray-900">13. Force Majeure</h3>
@@ -297,7 +313,7 @@ export default function HomePage() {
       )}
 
       {/* ================= HERO SECTION ================= */}
-      <section id="intro" className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden">
+      <section id="intro" className="relative pt-24 pb-16 sm:pt-28 md:pt-36 md:pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -left-40 w-96 h-96 bg-emerald-300/10 rounded-full blur-3xl animate-pulse"></div>
@@ -305,60 +321,60 @@ export default function HomePage() {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-radial from-emerald-100/30 via-transparent to-transparent"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-gray-900 z-10 space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-full border border-emerald-100 mb-4">
-              <Zap size={16} className="text-emerald-600" />
-              <span className="text-sm font-semibold text-emerald-700">Trusted by Fortune 1000 Companies</span>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="text-gray-900 z-10 space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-full border border-emerald-100">
+              <Zap size={14} className="text-emerald-600 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-semibold text-emerald-700">Trusted by Fortune 1000 Companies</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
               Global Offshore
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 mt-2">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 mt-1 sm:mt-2">
                 Solutions Redefined
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 max-w-xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
               Scalable, efficient, and reliable offshore expertise that transforms your business operations and accelerates growth.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
               <Link 
                 href="#contact" 
-                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:shadow-emerald-200 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+                className="group relative inline-flex items-center justify-center px-6 sm:px-8 py-4 text-base bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:shadow-emerald-200 active:scale-95 transition-all duration-300 transform hover:scale-105 overflow-hidden touch-manipulation"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Start Your Journey
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-teal-600 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
               <Link 
                 href="#services" 
-                className="group inline-flex items-center justify-center px-8 py-4 border-2 border-emerald-500 text-emerald-700 font-bold rounded-full hover:bg-emerald-50 transition-all duration-300 transform hover:scale-105"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-4 text-base border-2 border-emerald-500 text-emerald-700 font-bold rounded-full hover:bg-emerald-50 active:scale-95 transition-all duration-300 transform hover:scale-105 touch-manipulation"
               >
-                <Rocket className="mr-2" size={20} />
+                <Rocket className="mr-2" size={18} />
                 Explore Services
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-8">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 pt-6 sm:pt-8">
               {[
                 { value: "99.9%", label: "Accuracy Rate" },
                 { value: "24/7", label: "Support" },
                 { value: "1000+", label: "Happy Clients" }
               ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
-                  <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
+                <div key={i} className="text-center bg-white/50 backdrop-blur-sm rounded-xl p-3 sm:p-4 shadow-sm">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-xs sm:text-sm text-gray-600 mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative mt-8 lg:mt-0">
             <div className="relative z-10">
               <Image
                 src="/all_people.png"
@@ -366,7 +382,7 @@ export default function HomePage() {
                 width={800}
                 height={800}
                 priority
-                className="w-full max-w-2xl mx-auto animate-float"
+                className="w-full max-w-md sm:max-w-lg md:max-w-2xl mx-auto animate-float"
               />
             </div>
             
@@ -381,17 +397,17 @@ export default function HomePage() {
 
       {/* ================= ABOUT SECTION ================= */}
 
-      <section id="about" className="scroll-mt-20 py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-semibold mb-4">
-              <Award size={16} />
+      <section id="about" className="scroll-mt-16 py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
+              <Award size={14} className="sm:w-4 sm:h-4" />
               ABOUT OUR COMPANY
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 px-4">
               Precision Meets <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Innovation</span>
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+            <p className="text-gray-600 max-w-3xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-4">
               We combine cutting-edge technology with expert human insight to deliver payroll solutions that exceed expectations.
             </p>
           </div>
@@ -479,22 +495,22 @@ export default function HomePage() {
       </section>
 
       {/* ================= SERVICES SECTION ================= */}
-           <section id="services" className="scroll-mt-20 py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-semibold mb-4">
-              <Briefcase size={16} />
+           <section id="services" className="scroll-mt-16 py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
+              <Briefcase size={14} className="sm:w-4 sm:h-4" />
               OUR SERVICES
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 px-4">
               Comprehensive <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Solutions</span>
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+            <p className="text-gray-600 max-w-3xl mx-auto text-sm sm:text-base md:text-lg px-4">
               Tailored services designed to optimize your business operations and drive growth.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               { 
                 title: "Payroll Processing", 
@@ -535,16 +551,16 @@ export default function HomePage() {
             ].map((service, i) => (
               <div 
                 key={i} 
-                className="group relative overflow-hidden bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100"
+                className="group relative overflow-hidden bg-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-500 border border-gray-100 touch-manipulation"
               >
                 <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${service.gradient}`}></div>
-                <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${service.gradient} text-white mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`inline-flex p-3 sm:p-4 rounded-lg sm:rounded-xl bg-gradient-to-br ${service.gradient} text-white mb-4 sm:mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {service.icon}
                 </div>
-                <h4 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-emerald-700 transition-colors">
+                <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-emerald-700 transition-colors">
                   {service.title}
                 </h4>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   {service.desc}
                 </p>
                 
@@ -556,49 +572,37 @@ export default function HomePage() {
   
 
       {/* ================= CONTACT SECTION ================= */}
-       <section id="contact" className="scroll-mt-20 py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-semibold mb-4">
-              <Mail size={16} />
+       <section id="contact" className="scroll-mt-16 py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16">
+            <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
+              <Mail size={14} className="sm:w-4 sm:h-4" />
               GET IN TOUCH
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 px-4">
               Let's <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Connect</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12">
             {/* Contact Info */}
             <div className="space-y-8">
               <div className="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-3xl border border-emerald-100">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Our Offices</h3>
                 
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4 group">
-                    <div className="p-3 bg-emerald-100 rounded-xl group-hover:scale-110 transition-transform">
-                      <MapPin className="text-emerald-600" size={24} />
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-gray-800 text-lg mb-1">USA Headquarters</h5>
-                      <p className="text-gray-600">1353 Nightingale Ln, Bartlett, IL 60101</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Phone size={16} className="text-gray-400" />
-                        <span className="text-sm text-gray-500">+1 (555) 123-4567</span>
-                      </div>
-                    </div>
-                  </div>
+                  
 
                   <div className="flex items-start gap-4 group">
                     <div className="p-3 bg-emerald-100 rounded-xl group-hover:scale-110 transition-transform">
                       <MapPin className="text-emerald-600" size={24} />
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-800 text-lg mb-1">Canada Office</h5>
-                      <p className="text-gray-600">5610 Whistler Crescent, Mississauga, ON L473R6</p>
+                      <h5 className="font-bold text-gray-800 text-lg mb-1">India Office</h5>
+                      <p className="text-gray-600">No 13 katha No 116 Thota Vaari Veedhi Street, Parappana Agrahara, Bengaluru 560100, Karnataka, India</p>
                       <div className="flex items-center gap-2 mt-2">
                         <Phone size={16} className="text-gray-400" />
-                        <span className="text-sm text-gray-500">+1 (555) 987-6543</span>
+                        <span className="text-sm text-gray-500">+91 9344368897</span>
                       </div>
                     </div>
                   </div>
@@ -633,64 +637,64 @@ export default function HomePage() {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-xl border border-gray-100">
-              <form action="https://api.web3forms.com/submit" method="POST" className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-gray-50 to-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl shadow-xl border border-gray-100">
+              <form action="https://api.web3forms.com/submit" method="POST" className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <input type="hidden" name="access_key" value="4192a39d-afab-438a-9d30-076b6c6ab2cc"></input>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name</label>
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">Your Name</label>
                     <input 
                       type="text" 
                       name="name"
                       placeholder="John Doe"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full p-4 bg-white border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" 
+                      className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                       required 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                    <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">Email Address</label>
                     <input 
                       type="email" 
                       name="email"
                       placeholder="john@company.com"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full p-4 bg-white border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" 
+                      className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                       required 
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">Subject</label>
                   <input 
                     type="text" 
                     name="subject"
                     placeholder="How can we help?"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full p-4 bg-white border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all" 
+                    className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">Message</label>
                   <textarea 
                     name="message"
                     placeholder="Tell us about your project or inquiry..."
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full p-4 bg-white border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all resize-none" 
+                    className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all resize-none touch-manipulation" 
                     required
                   ></textarea>
                 </div>
                 
                 <button 
                   type="submit"
-                  className="group relative w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-4 px-8 rounded-xl hover:shadow-xl hover:shadow-emerald-200 transition-all duration-300 transform hover:scale-[1.02] overflow-hidden"
+                  className="group relative w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-4 px-6 sm:px-8 text-sm sm:text-base rounded-lg sm:rounded-xl hover:shadow-xl hover:shadow-emerald-200 active:scale-[0.98] transition-all duration-300 transform hover:scale-[1.02] overflow-hidden touch-manipulation"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Send Message
@@ -707,8 +711,8 @@ export default function HomePage() {
       {/* ================= FOOTER ================= */}
       {/* ================= FOOTER ================= */}
 <footer className="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-gray-300">
-  <div className="max-w-7xl mx-auto px-6 py-16">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pb-12 border-b border-gray-700">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-16">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12 pb-8 sm:pb-10 md:pb-12 border-b border-gray-700">
       {/* Company Info with Logo */}
       <div>
         <div className="mb-6">
@@ -771,34 +775,17 @@ export default function HomePage() {
         </ul>
       </div>
 
-      {/* USA Office */}
-      <div>
-        <h4 className="text-white font-bold mb-6 text-lg flex items-center gap-2">
-          <MapPin size={18} />
-          USA Office
-        </h4>
-        <div className="bg-gray-800/50 p-5 rounded-xl border border-gray-700 hover:border-emerald-500/30 transition-all duration-300">
-          <p className="text-sm text-gray-300 mb-2 font-semibold">SARV6 SOLUTIONS LLC</p>
-          <p className="text-sm text-gray-400">1353 Nightingale Ln<br/>Bartlett, IL 60101</p>
-          <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-700">
-            <Mail size={14} className="text-emerald-400" />
-            <a href="mailto:hr@sarv6solutions.com" className="text-sm text-gray-300 hover:text-emerald-400 transition-colors">
-              hr@sarv6solutions.com
-            </a>
-          </div>
-        </div>
-      </div>
 
-      {/* Canada Office & Newsletter */}
+      {/* India Office & Newsletter */}
       <div className="space-y-8">
         <div>
           <h4 className="text-white font-bold mb-6 text-lg flex items-center gap-2">
             <MapPin size={18} />
-            Canada Office
+            India Office
           </h4>
           <div className="bg-gray-800/50 p-5 rounded-xl border border-gray-700 hover:border-emerald-500/30 transition-all duration-300">
             <p className="text-sm text-gray-300 mb-2 font-semibold">SARV6 SOLUTIONS Ltd</p>
-            <p className="text-sm text-gray-400">5610 Whistler Crescent<br/>Mississauga, ON L473R6</p>
+            <p className="text-sm text-gray-400">No 13 katha No 116 Thota Vaari Veedhi Street<br/>Parappana Agrahara<br/>Bengaluru 560100, Karnataka, India</p>
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-700">
               <Mail size={14} className="text-emerald-400" />
               <a href="mailto:hr@sarv6solutions.com" className="text-sm text-gray-300 hover:text-emerald-400 transition-colors">
@@ -835,40 +822,40 @@ export default function HomePage() {
     </div>
 
     {/* Bottom Bar */}
-    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
       <div className="text-center md:text-left">
-        <p className="text-sm text-gray-400 tracking-wide">
-          © {new Date().getFullYear()} <span className="text-white font-semibold">SARV6 SOLUTIONS</span>. ALL RIGHTS RESERVED.
+        <p className="text-xs sm:text-sm text-gray-400 tracking-wide">
+          © {currentYear || new Date().getFullYear()} <span className="text-white font-semibold">SARV6 SOLUTIONS</span>. ALL RIGHTS RESERVED.
         </p>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-gray-500 mt-1 sm:mt-2">
           Building global partnerships since 2013
         </p>
       </div>
       
-      <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm">
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-6 text-xs sm:text-sm">
         <Link 
           href="#" 
-          className="text-gray-400 hover:text-white transition-colors px-3 py-1 rounded-full hover:bg-gray-800"
+          className="text-gray-400 hover:text-white active:bg-gray-700 transition-colors px-2.5 sm:px-3 py-2 rounded-full hover:bg-gray-800 touch-manipulation"
           onClick={() => setIsPrivacyOpen(true)}
         >
           Privacy Policy
         </Link>
         <Link 
           href="#" 
-          className="text-gray-400 hover:text-white transition-colors px-3 py-1 rounded-full hover:bg-gray-800"
+          className="text-gray-400 hover:text-white active:bg-gray-700 transition-colors px-2.5 sm:px-3 py-2 rounded-full hover:bg-gray-800 touch-manipulation"
           onClick={() => setIsModalOpen(true)}
         >
           Terms of Service
         </Link>
         <Link 
           href="#" 
-          className="text-gray-400 hover:text-white transition-colors px-3 py-1 rounded-full hover:bg-gray-800"
+          className="text-gray-400 hover:text-white active:bg-gray-700 transition-colors px-2.5 sm:px-3 py-2 rounded-full hover:bg-gray-800 touch-manipulation"
         >
           Cookies Policy
         </Link>
         <Link 
           href="#contact" 
-          className="text-emerald-400 hover:text-white transition-colors px-4 py-1 rounded-full border border-emerald-500/30 hover:bg-emerald-500/10"
+          className="text-emerald-400 hover:text-white active:bg-emerald-500/20 transition-colors px-3 sm:px-4 py-2 rounded-full border border-emerald-500/30 hover:bg-emerald-500/10 touch-manipulation"
         >
           Contact Support
         </Link>
