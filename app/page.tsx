@@ -649,7 +649,7 @@ export default function HomePage() {
                       placeholder="John Doe"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
+                      className="w-full p-3 sm:p-4 text-sm sm:text-base text-gray-900 bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                       required 
                     />
                   </div>
@@ -661,7 +661,7 @@ export default function HomePage() {
                       placeholder="john@company.com"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
+                      className="w-full p-3 sm:p-4 text-sm sm:text-base text-gray-900 bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                       required 
                     />
                   </div>
@@ -675,7 +675,7 @@ export default function HomePage() {
                     placeholder="How can we help?"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
+                    className="w-full p-3 sm:p-4 text-sm sm:text-base text-gray-900 bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all touch-manipulation" 
                   />
                 </div>
                 
@@ -687,7 +687,7 @@ export default function HomePage() {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full p-3 sm:p-4 text-sm sm:text-base bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all resize-none touch-manipulation" 
+                    className="w-full p-3 sm:p-4 text-sm sm:text-base text-gray-900 bg-white border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all resize-none touch-manipulation" 
                     required
                   ></textarea>
                 </div>

@@ -33,6 +33,19 @@ body {
   }
 }
 
+/* Form input text should always be black */
+input[type="text"],
+input[type="email"],
+textarea {
+  color: #111827 !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
